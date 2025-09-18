@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+        font-family: 'Neue Helvetica', Helvetica, Arial, sans-serif;
+        font-size: 18px;
+        line-height: 1.6;
+    }
+
+    h1 {
+        font-size: 2.75rem;
+        /* 44px */
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+        margin-bottom: 2rem;
+        /* 32px */
+    }
+
+    h2 {
+        font-size: 2rem;
+        /* 32px */
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+        /* 24px */
+    }
+
+    h3 {
+        font-size: 1.5rem;
+        /* 24px */
+        font-weight: 600;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+        /* 16px */
+    }
+
+    p,
+    li,
+    a,
+    label,
+    input,
+    textarea,
+    button {
+        font-size: 1rem;
+        font-family: inherit;
+        margin-bottom: 1.25rem;
+        /* 20px */
+    }
+
+    /* Ensure readable text in form controls */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    input[type="search"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="file"],
+    textarea,
+    select {
+        color: #111827;
+        /* Tailwind gray-900 */
+        background-color: #ffffff;
+        /* Ensure white background */
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        color: #6b7280;
+        /* Tailwind gray-500 for better contrast */
+        opacity: 1;
+        /* Firefox */
+    }
+}
