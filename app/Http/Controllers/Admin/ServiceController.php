@@ -27,13 +27,14 @@ class ServiceController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:services,slug',
             'description' => 'required|string',
-            'image' => 'nullable|image',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'category_id' => 'nullable|exists:categories,id',
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('services', 'public');
-        }
+        $imagePath = $request->file('image')->store('services', 'public');
+        $validated['image'] = $imagePath;
+    }
 
         Service::create($validated);
         return redirect()->route('admin.services.index')->with('success', 'Service created successfully.');

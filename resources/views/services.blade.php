@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 class="text-4xl font-extrabold text-blue-800 mb-6 text-center">Our Services</h1>
+    <h1 class="text-4xl font-extrabold text-blue-800 mb-6 text-center">Our Products</h1>
     <div class="w-full px-8 mb-8">
         <div class="flex flex-wrap gap-3 justify-center">
             <a href="{{ route('services') }}" class="px-4 py-2 rounded-full border {{ empty($activeCategory) ? 'bg-blue-700 text-black border-blue-700' : 'bg-white text-blue-700 border-blue-300' }}">All</a>

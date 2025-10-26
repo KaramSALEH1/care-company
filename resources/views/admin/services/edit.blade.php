@@ -1,46 +1,83 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="bg-white rounded-none shadow-lg p-10 w-full">
-        <h1 class="text-3xl font-extrabold text-blue-800 mb-6">Edit Service</h1>
-        <form action="{{ route('admin.services.update', $service) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+    <section class="bg-white rounded-xl shadow-lg p-8 w-full max-w-2xl mx-auto">
+        <!-- <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-900 mb-2">Edit Product</h1>
+            <p class="text-gray-600">Update the product information</p>
+        </div> -->
+        
+        <form action="{{ route('admin.services.update', $service) }}" method="POST" enctype="multipart/form-data" class="space-y-5">
             @csrf
             @method('PUT')
-            <div>
-                <label class="block mb-1 font-semibold text-blue-700" for="name">Name</label>
-                <input class="w-full border border-blue-200 rounded px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" type="text" id="name" name="name" value="{{ old('name', $service->name) }}" required>
-                @error('name')<div class="text-red-600 text-sm">{{ $message }}</div>@enderror
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="space-y-5">
+                    <div>
+                        <label class="block mb-2 font-medium text-gray-700" for="name">Product Name</label>
+                        <input class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
+                               type="text" id="name" name="name" value="{{ old('name', $service->name) }}" required>
+                        @error('name')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+                    </div>
+                    
+                    <div>
+                        <label class="block mb-2 font-medium text-gray-700" for="category_id">Category</label>
+                        <select class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
+                                id="category_id" name="category_id">
+                            <option value="">-- Select Category --</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ old('category_id', $service->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('category_id')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+                    </div>
+                    
+                    <div>
+                        <label class="block mb-2 font-medium text-gray-700" for="slug">URL Slug</label>
+                        <input class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
+                               type="text" id="slug" name="slug" value="{{ old('slug', $service->slug) }}" required>
+                        @error('slug')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+                    </div>
+                </div>
+                
+                <div class="space-y-5">
+                    <div>
+                        <label class="block mb-2 font-medium text-gray-700" for="image">Product Image</label>
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-blue-400 transition-colors">
+                            <input class="hidden" type="file" id="image" name="image" onchange="previewImage(this)">
+                            <label for="image" class="cursor-pointer">
+                                <svg class="w-8 h-8 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                <span class="text-sm text-gray-600">Click to upload image</span>
+                            </label>
+                        </div>
+                        @if($service->image)
+                            <div class="mt-3 text-center">
+                                <p class="text-sm text-gray-600 mb-2">Current Image:</p>
+                                <img src="{{ asset('storage/' . $service->image) }}" alt="Product Image" class="h-20 mx-auto rounded-lg shadow">
+                            </div>
+                        @endif
+                        @error('image')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
+                    </div>
+                </div>
             </div>
+            
             <div>
-                <label class="block mb-1 font-semibold text-blue-700" for="category_id">Category</label>
-                <select class="w-full border border-blue-200 rounded px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" id="category_id" name="category_id">
-                    <option value="">-- None --</option>
-                    @foreach($categories as $category)
-                        <option value="{{ $category->id }}" {{ old('category_id', $service->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-                    @endforeach
-                </select>
-                @error('category_id')<div class="text-red-600 text-sm">{{ $message }}</div>@enderror
+                <label class="block mb-2 font-medium text-gray-700" for="description">Description</label>
+                <textarea class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" 
+                          id="description" name="description" rows="3" placeholder="Enter product description..." required>{{ old('description', $service->description) }}</textarea>
+                @error('description')<div class="text-red-600 text-sm mt-1">{{ $message }}</div>@enderror
             </div>
-            <div>
-                <label class="block mb-1 font-semibold text-blue-700" for="slug">Slug</label>
-                <input class="w-full border border-blue-200 rounded px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" type="text" id="slug" name="slug" value="{{ old('slug', $service->slug) }}" required>
-                @error('slug')<div class="text-red-600 text-sm">{{ $message }}</div>@enderror
+            
+            <div class="flex space-x-4 pt-4">
+                <a href="{{ route('admin.services.index') }}" class="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium text-center hover:bg-gray-50 transition-colors">
+                    Cancel
+                </a>
+                <button type="submit" class="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-sm">
+                    Update Product
+                </button>
             </div>
-            <div>
-                <label class="block mb-1 font-semibold text-blue-700" for="description">Description</label>
-                <textarea class="w-full border border-blue-200 rounded px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" id="description" name="description" rows="4" required>{{ old('description', $service->description) }}</textarea>
-                @error('description')<div class="text-red-600 text-sm">{{ $message }}</div>@enderror
-            </div>
-            <div>
-                <label class="block mb-1 font-semibold text-blue-700" for="image">Image</label>
-                <input class="w-full border border-blue-200 rounded px-4 py-2" type="file" id="image" name="image">
-                @if($service->image)
-                    <img src="{{ asset('storage/' . $service->image) }}" alt="Service Image" class="h-16 mt-2 rounded shadow">
-                @endif
-                @error('image')<div class="text-red-600 text-sm">{{ $message }}</div>@enderror
-            </div>
-            <button type="submit" class="w-full bg-blue-700 text-white px-6 py-2 rounded-full font-semibold shadow hover:bg-blue-800 transition">Update Service</button>
-            <a href="{{ route('admin.services.index') }}" class="w-full block text-center text-gray-600 hover:underline mt-2">Cancel</a>
         </form>
     </section>
 @endsection 
@@ -70,6 +107,27 @@
             if (slugManuallyEdited && slugInput.value.length > 0) return;
             slugInput.value = slugify(nameInput.value);
         });
+
+        // Image preview function
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Create or update preview
+                    let preview = input.parentNode.querySelector('.image-preview');
+                    if (!preview) {
+                        preview = document.createElement('div');
+                        preview.className = 'mt-3 text-center image-preview';
+                        input.parentNode.appendChild(preview);
+                    }
+                    preview.innerHTML = `
+                        <p class="text-sm text-gray-600 mb-2">New Image Preview:</p>
+                        <img src="${e.target.result}" alt="Preview" class="h-20 mx-auto rounded-lg shadow">
+                    `;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
     })();
 </script>
 @endpush
