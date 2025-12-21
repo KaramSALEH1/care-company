@@ -37,7 +37,7 @@
     <header class="sticky top-0 z-50 bg-white shadow-lg border-b border-blue-200 w-full">
         <div class="max-w-7xl mx-auto flex items-center justify-between py-4 px-6 w-full">
             <a href="{{ route('home') }}" class="flex items-center space-x-3 hover:scale-105 transition-transform duration-200">
-                <img src="{{ asset('logo.png') }}" alt="Logo" class="h-10 w-10 bg-white rounded-full shadow-md p-1">
+                <img src="{{ asset('logo.png') }}" alt="Logo" class="h-20 w-20 bg-white rounded-full shadow-md p-1">
                 <span class="font-bold text-2xl bg-gradient-to-r from-blue-700 to-blue-600 bg-clip-text text-transparent">Care Company<span class="text-blue-500"></span></span>
             </a>
             
@@ -68,9 +68,6 @@
                         </button>
                     </form>
                 @else
-                    <a href="{{ route('login') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors duration-300 shadow-md hover:shadow-lg transform hover:scale-105">
-                        Login
-                    </a>
                 @endauth
             </div>
         </div>

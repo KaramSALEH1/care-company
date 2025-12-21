@@ -8,7 +8,6 @@
             @foreach($allCategories as $category)
                 <a href="{{ route('services', ['category' => $category->slug]) }}" class="px-4 py-2 rounded-full border {{ $activeCategory === $category->slug ? 'bg-blue-700 text-black border-blue-700' : 'bg-white text-blue-700 border-blue-300' }}">{{ $category->name }}</a>
             @endforeach
-            <a href="{{ route('services', ['category' => 'uncategorized']) }}" class="px-4 py-2 rounded-full border {{ $activeCategory === 'uncategorized' ? 'bg-blue-700 text-black border-blue-700' : 'bg-white text-blue-700 border-blue-300' }}">Uncategorized</a>
         </div>
     </div>
     <div class="space-y-12 w-full px-8">
