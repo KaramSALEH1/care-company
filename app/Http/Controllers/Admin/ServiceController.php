@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ServiceController extends Controller
 {
@@ -52,11 +53,15 @@ class ServiceController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:services,slug,' . $service->id,
             'description' => 'required|string',
-            'image' => 'nullable|image',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'category_id' => 'nullable|exists:categories,id',
         ]);
 
         if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($service->image) {
+                Storage::disk('public')->delete($service->image);
+            }
             $validated['image'] = $request->file('image')->store('services', 'public');
         }
 
